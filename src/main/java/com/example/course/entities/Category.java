@@ -1,5 +1,6 @@
 package com.example.course.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -21,7 +22,8 @@ public class Category implements Serializable {
 
     private String name;
 
-    @Transient
+    @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
     private Set<Product> products = new HashSet<>();
 
     public Category(){}
@@ -61,5 +63,9 @@ public class Category implements Serializable {
         if(obj == null || obj.getClass() != getClass()) return false;
         Category category = (Category) obj;
         return Objects.equals(id, category.id);
+    }
+
+    public void addProduct(Product product){
+        products.add(product);
     }
 }
